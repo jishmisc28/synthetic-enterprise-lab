@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Synthetic Enterprise Lab — source health</title>
+  <style>
+    :root { font-family: ui-sans-serif, system-ui, sans-serif; color: #102033; background: #f4f1ea; }
+    body { margin: 0; }
+    header { background: #102033; color: #f4f1ea; padding: 1.4rem 1.6rem; }
+    header h1 { margin: 0 0 .3rem; font-size: 1.4rem; letter-spacing: .02em; }
+    header p { margin: 0; opacity: .85; max-width: 42rem; }
+    main { padding: 1.2rem 1.6rem 3rem; }
+    .bar { display: flex; gap: 1rem; flex-wrap: wrap; margin: 1rem 0 1.4rem; }
+    .pill { background: #fff; border: 1px solid #d5cfc3; border-radius: 999px; padding: .35rem .8rem; font-size: .85rem; }
+    .pill.ok { border-color: #2f7d4a; color: #2f7d4a; }
+    .pill.bad { border-color: #b42318; color: #b42318; }
+    table { width: 100%; border-collapse: collapse; background: #fff; box-shadow: 0 1px 2px #0001; }
+    th, td { text-align: left; padding: .55rem .7rem; border-bottom: 1px solid #ece7dc; vertical-align: top; font-size: .9rem; }
+    th { background: #ece7dc; font-weight: 600; }
+    .up { color: #2f7d4a; font-weight: 650; }
+    .down { color: #b42318; font-weight: 650; }
+    .skip { color: #7a6a4f; }
+    code { font-size: .82rem; background: #ece7dc; padding: .05rem .3rem; }
+    h2 { margin: 2rem 0 .6rem; font-size: 1.05rem; }
+    ul.kinds { columns: 2; padding-left: 1.1rem; }
+    footer { margin-top: 2rem; font-size: .85rem; color: #5c5346; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Synthetic Enterprise Lab</h1>
+    <p>A synthetic company’s systems. Connect your own product to the sources on this page. This is the live list.</p>
+  </header>
+  <main>
+    <div class="bar" id="bar"></div>
+    <table>
+      <thead>
+        <tr>
+          <th>Source</th>
+          <th>Kind</th>
+          <th>Health</th>
+          <th>How to connect</th>
+          <th>Data model</th>
+        </tr>
+      </thead>
+      <tbody id="rows"></tbody>
+    </table>
+    <h2>Source kinds this lab speaks</h2>
+    <ul class="kinds" id="kinds"></ul>
+    <footer>
+      JSON: <a href="/catalog">/catalog</a> ·
+      health: <a href="/healthz">/healthz</a> ·
+      verify: <a href="/verify">/verify</a> ·
+      expect KPI: <a href="/expect/kpi/K5">/expect/kpi/K5</a>
+    </footer>
+  </main>
+  <script>
+    async function load() {
+      const data = await fetch("/catalog").then(r => r.json());
+      const down = data.down || [];
+      document.getElementById("bar").innerHTML = `
+        <span class="pill">domain: <strong>${data.domain_title || data.domain}</strong></span>
+        <span class="pill ${data.ok ? "ok" : "bad"}">${data.ok ? "all required sources up" : "down: " + down.join(", ")}</span>
+        <span class="pill">${(data.sources || []).length} sources</span>
+      `;
+      document.getElementById("rows").innerHTML = (data.sources || []).map(s => {
+        const h = s.health || {};
+        const cls = h.status === "up" ? "up" : h.status === "skipped" ? "skip" : "down";
+        const where = s.base_url || s.endpoint || (s.database ? `${s.host}:${s.port}/${s.database} schema=${s.schema}` : s.path || (s.host && s.port ? `${s.host}:${s.port}` : ""));
+        return `<tr>
+          <td><strong>${s.name}</strong><br><code>${s.id}</code><br>${s.role || ""}</td>
+          <td>${s.kind}<br>${s.protocol || ""}</td>
+          <td class="${cls}">${h.status || "?"}<br><small>${h.detail || ""}</small></td>
+          <td><code>${where}</code><br>${s.auth ? "auth: " + s.auth : ""}</td>
+          <td>${s.model || ""}<br><small>${s.join_notes || ""}</small></td>
+        </tr>`;
+      }).join("");
+      const kinds = data.kinds || {};
+      document.getElementById("kinds").innerHTML = Object.entries(kinds).map(([k, v]) =>
+        `<li><strong>${v.title}</strong> — ${v.how}</li>`
+      ).join("");
+    }
+    load().catch(err => { document.getElementById("bar").textContent = "catalog failed: " + err; });
+  </script>
+</body>
+</html>

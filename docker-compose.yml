@@ -1,0 +1,279 @@
+# Synthetic Enterprise Lab. Documented ports only.
+# Dev credentials are not secrets.
+#
+# S1 LMS, S4 Collections, S5 Gold, S8 GL each have their own Postgres process.
+# S2/S3/S6/S7/S9 sit on postgres-archive as an internal copy — not the client path.
+
+name: synthetic-enterprise-lab
+
+x-app: &app
+  build:
+    context: .
+    dockerfile: Dockerfile
+  environment: &app_env
+    PYTHONPATH: /opt/lab
+    LAB_ROOT: /opt/lab
+    DOMAIN: ${DOMAIN:-aarohan}
+    ESTATE_DIR: /data/output/aarohan
+    PG_HOST_LMS: postgres-lms
+    PG_HOST_COLL: postgres-coll
+    PG_HOST_GOLD: postgres-gold
+    PG_HOST_GL: postgres-gl
+    PG_HOST_ARCHIVE: postgres-archive
+
+x-pg: &pg
+  image: postgres:16-alpine
+  restart: unless-stopped
+
+services:
+  postgres-lms:
+    <<: *pg
+    environment:
+      POSTGRES_USER: aarohan
+      POSTGRES_PASSWORD: aarohan
+      POSTGRES_DB: aarohan_lms
+    volumes:
+      - pgdata-lms:/var/lib/postgresql/data
+    expose:
+      - "5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U aarohan -d aarohan_lms"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  postgres-coll:
+    <<: *pg
+    environment:
+      POSTGRES_USER: aarohan
+      POSTGRES_PASSWORD: aarohan
+      POSTGRES_DB: aarohan_coll
+    volumes:
+      - pgdata-coll:/var/lib/postgresql/data
+    ports:
+      - "55433:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U aarohan -d aarohan_coll"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  postgres-gold:
+    <<: *pg
+    environment:
+      POSTGRES_USER: aarohan
+      POSTGRES_PASSWORD: aarohan
+      POSTGRES_DB: aarohan_gold
+    volumes:
+      - pgdata-gold:/var/lib/postgresql/data
+    ports:
+      - "55435:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U aarohan -d aarohan_gold"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  postgres-gl:
+    <<: *pg
+    environment:
+      POSTGRES_USER: aarohan
+      POSTGRES_PASSWORD: aarohan
+      POSTGRES_DB: aarohan_gl
+    volumes:
+      - pgdata-gl:/var/lib/postgresql/data
+    ports:
+      - "55434:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U aarohan -d aarohan_gl"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  postgres-archive:
+    <<: *pg
+    environment:
+      POSTGRES_USER: aarohan
+      POSTGRES_PASSWORD: aarohan
+      POSTGRES_DB: postgres
+    volumes:
+      - pgdata-archive:/var/lib/postgresql/data
+      - ./sql/00_create_archive_databases.sql:/docker-entrypoint-initdb.d/00_create_archive_databases.sql:ro
+    ports:
+      - "55436:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U aarohan -d aarohan_pay"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  pgproxy:
+    <<: *app
+    command: ["python", "-m", "runtime.delayproxy"]
+    environment:
+      <<: *app_env
+      PG_UPSTREAM_HOST: postgres-lms
+    depends_on:
+      postgres-lms:
+        condition: service_healthy
+    ports:
+      - "55432:5432"
+    volumes:
+      - ./output/aarohan:/data/output/aarohan
+    restart: unless-stopped
+
+  loader:
+    <<: *app
+    command: ["sh", "-c", "python -m runtime.load && sleep infinity"]
+    depends_on:
+      postgres-lms:
+        condition: service_healthy
+      postgres-coll:
+        condition: service_healthy
+      postgres-gold:
+        condition: service_healthy
+      postgres-gl:
+        condition: service_healthy
+      postgres-archive:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "test", "-f", "/data/output/aarohan/stack/load_report.json"]
+      interval: 5s
+      timeout: 2s
+      retries: 80
+      start_period: 20s
+    environment:
+      <<: *app_env
+      SCALE: ${SCALE:-tiny}
+      SEED: ${SEED:-20260907}
+      MINIO_ENDPOINT: minio:9000
+      MINIO_ROOT_USER: aarohan
+      MINIO_ROOT_PASSWORD: aarohan-minio-dev
+      MINIO_OPTIONAL: ${MINIO_OPTIONAL:-0}
+    volumes:
+      - ./output/aarohan:/data/output/aarohan
+      - ./output/landing:/data/landing
+    restart: unless-stopped
+
+  erp:
+    <<: *app
+    command: ["python", "-m", "uvicorn", "runtime.erp:app", "--host", "0.0.0.0", "--port", "18080"]
+    depends_on:
+      loader:
+        condition: service_healthy
+    ports:
+      - "18080:18080"
+    volumes:
+      - ./output/aarohan:/data/output/aarohan
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://127.0.0.1:18080/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    restart: unless-stopped
+
+  events:
+    <<: *app
+    command: ["python", "-m", "uvicorn", "runtime.events:app", "--host", "0.0.0.0", "--port", "18081"]
+    depends_on:
+      loader:
+        condition: service_healthy
+    ports:
+      - "18081:18081"
+    environment:
+      <<: *app_env
+      MINIO_ENDPOINT: minio:9000
+      MINIO_ROOT_USER: aarohan
+      MINIO_ROOT_PASSWORD: aarohan-minio-dev
+      MINIO_OPTIONAL: ${MINIO_OPTIONAL:-0}
+    volumes:
+      - ./output/aarohan:/data/output/aarohan
+      - ./output/landing:/data/landing
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://127.0.0.1:18081/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    restart: unless-stopped
+
+  verify:
+    <<: *app
+    command: ["python", "-m", "uvicorn", "runtime.verify:app", "--host", "0.0.0.0", "--port", "18082"]
+    depends_on:
+      loader:
+        condition: service_healthy
+      postgres-lms:
+        condition: service_healthy
+      postgres-coll:
+        condition: service_healthy
+      postgres-gold:
+        condition: service_healthy
+      postgres-gl:
+        condition: service_healthy
+      postgres-archive:
+        condition: service_healthy
+    ports:
+      - "18082:18082"
+    volumes:
+      - ./output/aarohan:/data/output/aarohan
+      - ./output/landing:/data/landing
+    environment:
+      <<: *app_env
+      MINIO_OPTIONAL: ${MINIO_OPTIONAL:-0}
+      MINIO_ENDPOINT: http://minio:9000
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://127.0.0.1:18082/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    restart: unless-stopped
+
+  webhook:
+    <<: *app
+    command: ["python", "-m", "uvicorn", "runtime.webhook:app", "--host", "0.0.0.0", "--port", "18083"]
+    ports:
+      - "18083:18083"
+    volumes:
+      - ./output/aarohan:/data/output/aarohan
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://127.0.0.1:18083/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    restart: unless-stopped
+
+  mailpit:
+    image: axllent/mailpit:v1.21
+    restart: unless-stopped
+    ports:
+      - "18025:1025"
+      - "18084:8025"
+    environment:
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
+
+  minio:
+    image: minio/minio:RELEASE.2024-12-18T13-15-44Z
+    profiles: ["minio"]
+    command: server /data --console-address ":9001"
+    restart: unless-stopped
+    ports:
+      - "19000:9000"
+      - "19001:9001"
+    environment:
+      MINIO_ROOT_USER: aarohan
+      MINIO_ROOT_PASSWORD: aarohan-minio-dev
+    volumes:
+      - minio:/data
+
+volumes:
+  pgdata-lms:
+  pgdata-coll:
+  pgdata-gold:
+  pgdata-gl:
+  pgdata-archive:
+  minio:
+
+networks:
+  default:
+    name: synthetic-enterprise-lab

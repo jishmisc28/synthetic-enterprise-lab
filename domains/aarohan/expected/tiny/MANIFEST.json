@@ -1,0 +1,15 @@
+{
+  "seed": 20260907,
+  "scale": "tiny",
+  "estate": "aarohan",
+  "generator": "domains/aarohan/run.py",
+  "domain": "aarohan-lending",
+  "estate_today": "2026-09-07",
+  "close_date": "2026-08-31",
+  "customers": 157,
+  "loans": 108,
+  "instalments": 400,
+  "s2_payments": 202,
+  "rule_set_sha256": "833f446c06d6457e7b53ad509e2d9ae9166469377f511d19abbe9c109c6f493f",
+  "ground_truth_sha256": "84ef0dbc328eeebfca31ec2f59cf09094d8a391f551bda036f1bdae97601889a"
+}

@@ -1,0 +1,343 @@
+{
+  "cleaning": {
+    "collection_events": 31,
+    "customers": 157,
+    "gl_lines": 199,
+    "gold_ops": 15,
+    "identity_twins": 3,
+    "instalments": 400,
+    "loans": 108,
+    "s2_payments": 202
+  },
+  "close_date": "2026-08-31",
+  "estate": "aarohan",
+  "incidents": {
+    "count_near_miss": 10,
+    "count_valid": 16,
+    "near_miss": [
+      "I01n",
+      "I02n",
+      "I03n",
+      "I05n",
+      "I07n",
+      "I08n",
+      "I10n",
+      "I14n",
+      "M4-ZERO",
+      "M9-GOLD-OK"
+    ],
+    "valid": [
+      "I01",
+      "I02",
+      "I03",
+      "I04",
+      "I05",
+      "I06",
+      "I07",
+      "I08",
+      "I09",
+      "I10",
+      "I11",
+      "I12",
+      "I13",
+      "I14",
+      "I15",
+      "M4-EMPTY"
+    ]
+  },
+  "kpis": {
+    "K1": {
+      "as_at": "close",
+      "denominator": null,
+      "id": "K1",
+      "numerator": null,
+      "shape": "AM",
+      "unit": "inr",
+      "value": "775500.0000"
+    },
+    "K10": {
+      "as_at": "close",
+      "denominator": null,
+      "id": "K10",
+      "numerator": null,
+      "shape": "AM",
+      "unit": "rate",
+      "value": "2.4804"
+    },
+    "K11": {
+      "id": "K11",
+      "row_count": 4,
+      "rows": [
+        {
+          "contribution": "102979.7628",
+          "product_code": "BNPL"
+        },
+        {
+          "contribution": "393607.6478",
+          "product_code": "GOLD"
+        },
+        {
+          "contribution": "174808.0486",
+          "product_code": "PL"
+        },
+        {
+          "contribution": "-1900.0000",
+          "product_code": "TW"
+        }
+      ],
+      "shape": "DM"
+    },
+    "K12": {
+      "as_at": "close",
+      "denominator": null,
+      "id": "K12",
+      "numerator": 1,
+      "shape": "AM",
+      "unit": "count",
+      "value": "1.0000"
+    },
+    "K13": {
+      "as_at": "close",
+      "denominator": null,
+      "id": "K13",
+      "numerator": 4,
+      "shape": "AM",
+      "unit": "count",
+      "value": "4.0000"
+    },
+    "K14": {
+      "as_at": "close",
+      "denominator": 15,
+      "id": "K14",
+      "numerator": 10,
+      "shape": "AM",
+      "unit": "rate",
+      "value": "0.6667"
+    },
+    "K2": {
+      "as_at": "close",
+      "denominator": null,
+      "id": "K2",
+      "numerator": null,
+      "shape": "AM",
+      "unit": "inr",
+      "value": "10888000.0000"
+    },
+    "K3": {
+      "as_at": "close",
+      "denominator": null,
+      "id": "K3",
+      "numerator": null,
+      "shape": "AM",
+      "unit": "inr",
+      "value": "611395.4592"
+    },
+    "K4": {
+      "as_at": "close",
+      "denominator": null,
+      "id": "K4",
+      "numerator": null,
+      "shape": "AM",
+      "unit": "inr",
+      "value": "500.0000"
+    },
+    "K5": {
+      "as_at": "close",
+      "denominator": null,
+      "id": "K5",
+      "numerator": null,
+      "shape": "AM",
+      "unit": "rate",
+      "value": "0.8714"
+    },
+    "K6": {
+      "as_at": "close",
+      "denominator": null,
+      "id": "K6",
+      "numerator": null,
+      "shape": "AM",
+      "unit": "rate",
+      "value": "0.0073"
+    },
+    "K7": {
+      "id": "K7",
+      "note": "roll 0\u21921 requires a prior-month snapshot; tiny emits the named book only",
+      "row_count": 0,
+      "shape": "DM"
+    },
+    "K8": {
+      "as_at": "close",
+      "denominator": null,
+      "id": "K8",
+      "numerator": null,
+      "shape": "AM",
+      "unit": "rate",
+      "value": "0.0073"
+    },
+    "K9": {
+      "as_at": "close",
+      "denominator": null,
+      "id": "K9",
+      "numerator": null,
+      "shape": "AM",
+      "unit": "inr",
+      "value": "18400.0000"
+    }
+  },
+  "monitors": {
+    "M1": {
+      "count": 1,
+      "must": [
+        "AF-LN-I01-PL"
+      ],
+      "must_not": [
+        "AF-LN-I01N-PL"
+      ],
+      "observed": [
+        "AF-LN-I01-PL"
+      ],
+      "owner": "finance.controller@aarohan.example"
+    },
+    "M10": {
+      "count": 4,
+      "must": [
+        "AF-LN-I01-PL",
+        "AF-LN-I13-GL",
+        "AF-LN-I07-TW"
+      ],
+      "must_not": [
+        "timing_not_break"
+      ],
+      "observed": [
+        "AF-LN-I15-PL-A",
+        "AF-LN-I01-PL",
+        "AF-LN-I13-GL",
+        "AF-LN-I07-TW"
+      ],
+      "owner": "finance.controller@aarohan.example",
+      "timing_not_break": [
+        "2026-08-05|AF-LN-I01N-PL"
+      ]
+    },
+    "M2": {
+      "count": 2,
+      "must": [
+        "CHG-I03",
+        "INS-I04"
+      ],
+      "must_not": [
+        "CHG-I03N"
+      ],
+      "observed": [
+        "CHG-I03",
+        "INS-I04"
+      ],
+      "owner": "product.pl@aarohan.example"
+    },
+    "M3": {
+      "count": 1,
+      "must": [
+        "RCPT-I02"
+      ],
+      "must_not": [
+        "RCPT-I02N"
+      ],
+      "observed": [
+        "RCPT-I02"
+      ],
+      "owner": "finance.controller@aarohan.example"
+    },
+    "M4": {
+      "count": 1,
+      "must": [
+        "AF-LN-M4-EMPTY"
+      ],
+      "must_not": [
+        "AF-LN-M4-ZERO"
+      ],
+      "observed": [
+        "AF-LN-M4-EMPTY"
+      ],
+      "owner": "collections.mgr.digital@aarohan.example"
+    },
+    "M5": {
+      "count": 2,
+      "must": [
+        "INC-I05",
+        "INC-I06"
+      ],
+      "must_not": [
+        "INC-I05N"
+      ],
+      "observed": [
+        "INC-I05",
+        "INC-I06"
+      ],
+      "owner": "collections.mgr.west@aarohan.example"
+    },
+    "M6": {
+      "count": 2,
+      "must": [
+        "AF-AP-I08",
+        "AF-AP-I09"
+      ],
+      "must_not": [
+        "AF-AP-I08N"
+      ],
+      "observed": [
+        "AF-AP-I08",
+        "AF-AP-I09"
+      ],
+      "owner": "credit.mgr@aarohan.example"
+    },
+    "M7": {
+      "count": 3,
+      "must": [
+        "PKT-I10",
+        "PKT-I11",
+        "PKT-I12"
+      ],
+      "must_not": [
+        "PKT-I10N"
+      ],
+      "observed": [
+        "PKT-I10",
+        "PKT-I11",
+        "PKT-I12"
+      ],
+      "owner": "gold.ops.pnq-kth@aarohan.example"
+    },
+    "M8": {
+      "count": 3,
+      "must": [
+        "PKT-I13",
+        "WO-I14",
+        "REC-I15"
+      ],
+      "must_not": [
+        "WO-I14N"
+      ],
+      "observed": [
+        "WO-I14",
+        "PKT-I13",
+        "REC-I15"
+      ],
+      "owner": "finance.controller@aarohan.example"
+    },
+    "M9": {
+      "count": 1,
+      "must": [
+        "CMP-I09"
+      ],
+      "must_not": [
+        "CMP-GOLD-OK"
+      ],
+      "observed": [
+        "CMP-I09"
+      ],
+      "owner": "product.crm@aarohan.example"
+    }
+  },
+  "scale": "tiny",
+  "seed": 20260907
+}

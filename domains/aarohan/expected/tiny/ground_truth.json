@@ -1,0 +1,449 @@
+[
+  {
+    "branch_code": "PNQ-HIN",
+    "causal_event": "UPI success 2026-08-03 21:12 IST; LMS apply job skipped",
+    "customer_cif": "AF-00010010",
+    "expected_action": "Apply receipt or unmatched-cash",
+    "expected_detection": true,
+    "incident_id": "I01",
+    "kind": "valid",
+    "loan_no": "AF-LN-I01-PL",
+    "monitor_id": "M1",
+    "owner_email": "finance.controller@aarohan.example",
+    "product_code": "PL",
+    "severity": "high",
+    "source_records": {
+      "instalment_id": "INS-I01",
+      "s2_txn_ref": "UPI-I01-8891"
+    }
+  },
+  {
+    "branch_code": "PNQ-HIN",
+    "causal_event": "UPI late evening; LMS applied 06:10 IST next day",
+    "customer_cif": "AF-00010010",
+    "expected_action": "none",
+    "expected_detection": false,
+    "incident_id": "I01n",
+    "kind": "near_miss",
+    "loan_no": "AF-LN-I01N-PL",
+    "monitor_id": "M1",
+    "owner_email": "finance.controller@aarohan.example",
+    "product_code": "PL",
+    "severity": "high",
+    "source_records": {
+      "s2_txn_ref": "UPI-I01N-11"
+    }
+  },
+  {
+    "branch_code": "MUM-AND",
+    "causal_event": "Partial \u20b94000 on 2025-05-12 allocated charges-first after v2",
+    "customer_cif": "AF-00010012",
+    "expected_action": "Reverse and re-allocate INTEREST\u2192CHARGE\u2192PRINCIPAL",
+    "expected_detection": true,
+    "incident_id": "I02",
+    "kind": "valid",
+    "loan_no": "AF-LN-I02-PL",
+    "monitor_id": "M3",
+    "owner_email": "finance.controller@aarohan.example",
+    "product_code": "PL",
+    "severity": "high",
+    "source_records": {
+      "lms_receipt_no": "RCPT-I02"
+    }
+  },
+  {
+    "branch_code": "MUM-AND",
+    "causal_event": "CHARGE-first on 2025-03-20 is WATERFALL v1",
+    "customer_cif": "AF-00010012",
+    "expected_action": "none",
+    "expected_detection": false,
+    "incident_id": "I02n",
+    "kind": "near_miss",
+    "loan_no": "AF-LN-I02N-PL",
+    "monitor_id": "M3",
+    "owner_email": "finance.controller@aarohan.example",
+    "product_code": "PL",
+    "severity": "high",
+    "source_records": {
+      "lms_receipt_no": "RCPT-I02N"
+    }
+  },
+  {
+    "branch_code": "BLR-JPN",
+    "causal_event": "Payment value_date due+2; PL grace 3; late charge still posted",
+    "customer_cif": "AF-00010014",
+    "expected_action": "Reverse CHG-I03",
+    "expected_detection": true,
+    "incident_id": "I03",
+    "kind": "valid",
+    "loan_no": "AF-LN-I03-PL",
+    "monitor_id": "M2",
+    "owner_email": "product.pl@aarohan.example",
+    "product_code": "PL",
+    "severity": "medium",
+    "source_records": {
+      "charge_no": "CHG-I03"
+    }
+  },
+  {
+    "branch_code": "BLR-JPN",
+    "causal_event": "Payment due+4, outside grace",
+    "customer_cif": "AF-00010014",
+    "expected_action": "none",
+    "expected_detection": false,
+    "incident_id": "I03n",
+    "kind": "near_miss",
+    "loan_no": "AF-LN-I03N-PL",
+    "monitor_id": "M2",
+    "owner_email": "product.pl@aarohan.example",
+    "product_code": "PL",
+    "severity": "medium",
+    "source_records": {
+      "charge_no": "CHG-I03N"
+    }
+  },
+  {
+    "branch_code": "CHN-TNG",
+    "causal_event": "EMI due 2026-08-15; moratorium ends 2026-09-15",
+    "customer_cif": "AF-00010011",
+    "expected_action": "Withdraw EMI; extend moratorium",
+    "expected_detection": true,
+    "incident_id": "I04",
+    "kind": "valid",
+    "loan_no": "AF-LN-I04-EDU",
+    "monitor_id": "M2",
+    "owner_email": "product.edu@aarohan.example",
+    "product_code": "EDU",
+    "severity": "high",
+    "source_records": {
+      "instalment_id": "INS-I04"
+    }
+  },
+  {
+    "branch_code": "MUM-AND",
+    "causal_event": "Incentive 21 Jul; UPI reversed 23 Jul (T+3)",
+    "customer_cif": "AF-00010019",
+    "expected_action": "Clawback INC-I05",
+    "expected_detection": true,
+    "incident_id": "I05",
+    "kind": "valid",
+    "loan_no": "AF-LN-I05-PL",
+    "monitor_id": "M5",
+    "owner_email": "collections.mgr.west@aarohan.example",
+    "product_code": "PL",
+    "severity": "high",
+    "source_records": {
+      "incentive_id": "INC-I05"
+    }
+  },
+  {
+    "branch_code": "MUM-AND",
+    "causal_event": "Reversal T+11, outside 7-day clawback",
+    "customer_cif": "AF-00010019",
+    "expected_action": "none",
+    "expected_detection": false,
+    "incident_id": "I05n",
+    "kind": "near_miss",
+    "loan_no": "AF-LN-I05N-PL",
+    "monitor_id": "M5",
+    "owner_email": "collections.mgr.west@aarohan.example",
+    "product_code": "PL",
+    "severity": "high",
+    "source_records": {
+      "incentive_id": "INC-I05N"
+    }
+  },
+  {
+    "branch_code": "AHM-SG",
+    "causal_event": "Collected by A-WEST-07; paid A-WEST-12",
+    "customer_cif": "AF-00010020",
+    "expected_action": "Clawback and pay collecting agent",
+    "expected_detection": true,
+    "incident_id": "I06",
+    "kind": "valid",
+    "loan_no": "AF-LN-I06-PL",
+    "monitor_id": "M5",
+    "owner_email": "collections.mgr.west@aarohan.example",
+    "product_code": "PL",
+    "severity": "medium",
+    "source_records": {
+      "incentive_id": "INC-I06"
+    }
+  },
+  {
+    "branch_code": "HYD-BAN",
+    "causal_event": "Commission on duplicate first disbursement AF-DSB-I07-2",
+    "customer_cif": "AF-00010013",
+    "expected_action": "Recover commission; reverse duplicate disb",
+    "expected_detection": true,
+    "incident_id": "I07",
+    "kind": "valid",
+    "loan_no": "AF-LN-I07-TW",
+    "monitor_id": "M10",
+    "owner_email": "dealer.mgr@aarohan.example",
+    "product_code": "TW",
+    "severity": "high",
+    "source_records": {
+      "commission_id": "COM-I07"
+    }
+  },
+  {
+    "branch_code": "HYD-BAN",
+    "causal_event": "Second disb is a top-up; no commission paid",
+    "customer_cif": "AF-00010013",
+    "expected_action": "none",
+    "expected_detection": false,
+    "incident_id": "I07n",
+    "kind": "near_miss",
+    "loan_no": "AF-LN-I07N-TW",
+    "monitor_id": "M10",
+    "owner_email": "dealer.mgr@aarohan.example",
+    "product_code": "TW",
+    "severity": "high",
+    "source_records": {
+      "disb_no": "AF-DSB-I07N-2"
+    }
+  },
+  {
+    "branch_code": "DEL-SKT",
+    "causal_event": "Sanction at 671 vs cutoff 680, no override",
+    "customer_cif": "AF-00010021",
+    "expected_action": "Exception file or cancel path",
+    "expected_detection": true,
+    "incident_id": "I08",
+    "kind": "valid",
+    "loan_no": "AF-LN-I08-PL",
+    "monitor_id": "M6",
+    "owner_email": "credit.mgr@aarohan.example",
+    "product_code": "PL",
+    "severity": "high",
+    "source_records": {
+      "appl_no": "AF-AP-I08"
+    }
+  },
+  {
+    "branch_code": "DEL-SKT",
+    "causal_event": "Same score with documented override",
+    "customer_cif": "AF-00010022",
+    "expected_action": "none",
+    "expected_detection": false,
+    "incident_id": "I08n",
+    "kind": "near_miss",
+    "loan_no": "AF-LN-I08N-PL",
+    "monitor_id": "M6",
+    "owner_email": "credit.mgr@aarohan.example",
+    "product_code": "PL",
+    "severity": "high",
+    "source_records": {
+      "appl_no": "AF-AP-I08N"
+    }
+  },
+  {
+    "branch_code": "HYD-BAN",
+    "causal_event": "New PL while TW at 120 DPD; also offered CMP-I09",
+    "customer_cif": "AF-00010013",
+    "expected_action": "Risk review; suppress campaign",
+    "expected_detection": true,
+    "incident_id": "I09",
+    "kind": "valid",
+    "loan_no": "AF-LN-I09-PL",
+    "monitor_id": "M6",
+    "owner_email": "risk.mgr@aarohan.example",
+    "product_code": "PL",
+    "severity": "critical",
+    "source_records": {
+      "appl_no": "AF-AP-I09",
+      "offer_id": "CMP-I09",
+      "sibling": "AF-LN-I09-TW"
+    }
+  },
+  {
+    "branch_code": "PNQ-KTH",
+    "causal_event": "LTV 82% on 2025-08-12 vs 75% cap",
+    "customer_cif": "AF-00010015",
+    "expected_action": "Margin call / reval",
+    "expected_detection": true,
+    "incident_id": "I10",
+    "kind": "valid",
+    "loan_no": "AF-LN-I10-GL",
+    "monitor_id": "M7",
+    "owner_email": "gold.ops.pnq-kth@aarohan.example",
+    "product_code": "GOLD",
+    "severity": "high",
+    "source_records": {
+      "packet_id": "PKT-I10"
+    }
+  },
+  {
+    "branch_code": "PNQ-KTH",
+    "causal_event": "LTV 82% on 2025-06-15 when cap was 85%",
+    "customer_cif": "AF-00010016",
+    "expected_action": "none",
+    "expected_detection": false,
+    "incident_id": "I10n",
+    "kind": "near_miss",
+    "loan_no": "AF-LN-I10N-GL",
+    "monitor_id": "M7",
+    "owner_email": "gold.ops.pnq-kth@aarohan.example",
+    "product_code": "GOLD",
+    "severity": "high",
+    "source_records": {
+      "packet_id": "PKT-I10N"
+    }
+  },
+  {
+    "branch_code": "MUM-AND",
+    "causal_event": "Packet released 2026-06-02; loan still ACTIVE",
+    "customer_cif": "AF-00010017",
+    "expected_action": "Recall packet or force-close loan",
+    "expected_detection": true,
+    "incident_id": "I11",
+    "kind": "valid",
+    "loan_no": "AF-LN-I11-GL",
+    "monitor_id": "M7",
+    "owner_email": "gold.ops.mum-and@aarohan.example",
+    "product_code": "GOLD",
+    "severity": "critical",
+    "source_records": {
+      "packet_id": "PKT-I11"
+    }
+  },
+  {
+    "branch_code": "BLR-JPN",
+    "causal_event": "Valuation 2025-11-01; 273 days at close vs 180 policy",
+    "customer_cif": "AF-00010018",
+    "expected_action": "Revalue",
+    "expected_detection": true,
+    "incident_id": "I12",
+    "kind": "valid",
+    "loan_no": "AF-LN-I12-GL",
+    "monitor_id": "M7",
+    "owner_email": "gold.ops.blr-jpn@aarohan.example",
+    "product_code": "GOLD",
+    "severity": "medium",
+    "source_records": {
+      "packet_id": "PKT-I12"
+    }
+  },
+  {
+    "branch_code": "PNQ-KTH",
+    "causal_event": "Proceeds 120000; settlement 95000; surplus missing",
+    "customer_cif": "AF-00010016",
+    "expected_action": "Refund surplus / reclass suspense",
+    "expected_detection": true,
+    "incident_id": "I13",
+    "kind": "valid",
+    "loan_no": "AF-LN-I13-GL",
+    "monitor_id": "M8",
+    "owner_email": "finance.controller@aarohan.example",
+    "product_code": "GOLD",
+    "severity": "high",
+    "source_records": {
+      "auction_id": "PKT-I13",
+      "rec_no": "REC-I13"
+    }
+  },
+  {
+    "branch_code": "AHM-SG",
+    "causal_event": "WO 18400 at DPD 45, no approval",
+    "customer_cif": "AF-00010020",
+    "expected_action": "Reverse or file approval",
+    "expected_detection": true,
+    "incident_id": "I14",
+    "kind": "valid",
+    "loan_no": "AF-LN-I14-PL",
+    "monitor_id": "M8",
+    "owner_email": "finance.controller@aarohan.example",
+    "product_code": "PL",
+    "severity": "critical",
+    "source_records": {
+      "wo_no": "WO-I14"
+    }
+  },
+  {
+    "branch_code": "DEL-SKT",
+    "causal_event": "Residual 400 after settlement; below 500 materiality",
+    "customer_cif": "AF-00010022",
+    "expected_action": "none",
+    "expected_detection": false,
+    "incident_id": "I14n",
+    "kind": "near_miss",
+    "loan_no": "AF-LN-I14N-PL",
+    "monitor_id": "M8",
+    "owner_email": "finance.controller@aarohan.example",
+    "product_code": "PL",
+    "severity": "critical",
+    "source_records": {
+      "wo_no": "WO-I14N"
+    }
+  },
+  {
+    "branch_code": "DEL-SKT",
+    "causal_event": "Post-WO recovery posted to sibling PL-B; UTR hints PL-A",
+    "customer_cif": "AF-00010021",
+    "expected_action": "Repost REC-I15 to AF-LN-I15-PL-A",
+    "expected_detection": true,
+    "incident_id": "I15",
+    "kind": "valid",
+    "loan_no": "AF-LN-I15-PL-B",
+    "monitor_id": "M8",
+    "owner_email": "finance.controller@aarohan.example",
+    "product_code": "PL",
+    "severity": "high",
+    "source_records": {
+      "rec_no": "REC-I15",
+      "wo_no": "WO-I15"
+    }
+  },
+  {
+    "branch_code": "DIGITAL",
+    "causal_event": "4 calls, no PTP kept, no S2 money",
+    "customer_cif": "AF-00010023",
+    "expected_action": "Re-assign or escalate",
+    "expected_detection": true,
+    "incident_id": "M4-EMPTY",
+    "kind": "valid",
+    "loan_no": "AF-LN-M4-EMPTY",
+    "monitor_id": "M4",
+    "owner_email": "collections.mgr.digital@aarohan.example",
+    "product_code": "BNPL",
+    "severity": "medium",
+    "source_records": {
+      "loan_no": "AF-LN-M4-EMPTY"
+    }
+  },
+  {
+    "branch_code": "DIGITAL",
+    "causal_event": "Must not manufacture a case",
+    "customer_cif": "AF-00010023",
+    "expected_action": "none",
+    "expected_detection": false,
+    "incident_id": "M4-ZERO",
+    "kind": "near_miss",
+    "loan_no": "AF-LN-M4-ZERO",
+    "monitor_id": "M4",
+    "owner_email": "collections.mgr.digital@aarohan.example",
+    "product_code": "BNPL",
+    "severity": "medium",
+    "source_records": {
+      "loan_no": "AF-LN-M4-ZERO"
+    }
+  },
+  {
+    "branch_code": "PNQ-KTH",
+    "causal_event": "Gold top-up offer; live PL DPD 20 is below XSELL 30",
+    "customer_cif": "AF-00010024",
+    "expected_action": "none",
+    "expected_detection": false,
+    "incident_id": "M9-GOLD-OK",
+    "kind": "near_miss",
+    "loan_no": "AF-LN-M9-OK-PL",
+    "monitor_id": "M9",
+    "owner_email": "product.crm@aarohan.example",
+    "product_code": "GOLD",
+    "severity": "medium",
+    "source_records": {
+      "offer_id": "CMP-GOLD-OK"
+    }
+  }
+]

@@ -1,0 +1,16 @@
+-- Historical single-cluster init. The running estate no longer uses this file.
+-- Dedicated: aarohan_lms / aarohan_coll / aarohan_gold / aarohan_gl
+--   (POSTGRES_DB on postgres-lms, postgres-coll, postgres-gold, postgres-gl)
+-- Archive cluster: see 00_create_archive_databases.sql
+--   aarohan_pay, aarohan_bureau, aarohan_veh, aarohan_crm, aarohan_masters
+--
+-- Names kept here so a reader can still grep every database.
+-- aarohan_lms
+-- aarohan_pay
+-- aarohan_bureau
+-- aarohan_coll
+-- aarohan_gold
+-- aarohan_veh
+-- aarohan_crm
+-- aarohan_gl
+-- aarohan_masters
