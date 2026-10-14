@@ -2,7 +2,7 @@
 
 A local synthetic company whose systems disagree, for testing data agents, analytics, and reconciliation.
 
-A zip of CSVs cannot return HTTP 500, arrive late, or go down. This lab can. You start it, then point your own product at the ports. The lab does not call you.
+A zip of CSVs cannot return HTTP 500, arrive late, or go down. This lab can. You start it, then point your own product at the ports. 
 
 ## Show me
 
